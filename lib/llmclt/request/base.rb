@@ -29,7 +29,7 @@ module Llmclt
       private
 
       def endpoint_host
-        if @config.location_id == 'global'
+        if @config.api_key.present? || @config.location_id == 'global'
           'aiplatform.googleapis.com'
         else
           "#{@config.location_id}-aiplatform.googleapis.com"

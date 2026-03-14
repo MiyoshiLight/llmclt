@@ -59,7 +59,15 @@ module Llmclt
     end
 
     def request_headers
-      authorizer.apply({ 'Content-Type': 'application/json' })
+      if @config.api_key.blank?
+        authorizer.apply(default_request_headers)
+      else
+        default_request_headers
+      end
+    end
+
+    def default_request_headers
+      { 'Content-Type': 'application/json' }
     end
 
     def authorizer

@@ -5,6 +5,7 @@ RSpec.describe Llmclt::Client do
   let!(:location_id) { 'us-central1' }
   let!(:model) { 'gemini-2.0-flash-lite-001' }
   let!(:service_account_json) { File.read('spec/fixtures/service_account.json') }
+  let!(:api_key) { 'AIzaSyB-vX9qR7zW3kP2mL1nJ0h5Y8t4G6f2E0c' }
   let!(:client) do
     described_class.new(
       project_id: project_id,
@@ -19,6 +20,12 @@ RSpec.describe Llmclt::Client do
       location_id: 'global',
       model: model,
       service_account_json: service_account_json
+    )
+  end
+  let!(:client_with_api_key) do
+    described_class.new(
+      model: model,
+      api_key: api_key
     )
   end
   let!(:client_with_config) do
@@ -78,6 +85,13 @@ RSpec.describe Llmclt::Client do
           body: File.read('spec/fixtures/gemini_response.json')
         )
 
+      stub_request(:post, "https://aiplatform.googleapis.com/v1/publishers/google/models/#{model}:generateContent?key=#{api_key}")
+        .with(headers: { 'Content-type': 'application/json' })
+        .to_return(
+          headers: { 'Content-Type' => 'application/json' },
+          body: File.read('spec/fixtures/gemini_response.json')
+        )
+
       stub_request(:post, "https://aiplatform.googleapis.com/v1/projects/#{project_id}/locations/global/publishers/google/models/#{model}:streamGenerateContent")
         .with(headers: { 'Content-type': 'application/json' })
         .to_return(
@@ -91,6 +105,13 @@ RSpec.describe Llmclt::Client do
           headers: { 'Content-Type' => 'application/json' },
           body: File.read('spec/fixtures/gemini_stream_response.json')
         )
+
+      stub_request(:post, "https://aiplatform.googleapis.com/v1/publishers/google/models/#{model}:streamGenerateContent?key=#{api_key}")
+        .with(headers: { 'Content-type': 'application/json' })
+        .to_return(
+          headers: { 'Content-Type' => 'application/json' },
+          body: File.read('spec/fixtures/gemini_stream_response.json')
+        )
     end
 
     context 'when stream is true' do
@@ -99,11 +120,23 @@ RSpec.describe Llmclt::Client do
         expect(response.success?).to be(true)
         expect(response.text).to eq("I'm Fine.")
       end
+
+      it 'gets a response with API key' do
+        response = client_with_api_key.request(prompt, stream: true)
+        expect(response.success?).to be(true)
+        expect(response.text).to eq("I'm Fine.")
+      end
     end
 
     context 'when stream is false' do
       it 'gets a response' do
         response = client.request(prompt)
+        expect(response.success?).to be(true)
+        expect(response.text).to eq("I'm Fine.")
+      end
+
+      it 'gets a response with API key' do
+        response = client_with_api_key.request(prompt)
         expect(response.success?).to be(true)
         expect(response.text).to eq("I'm Fine.")
       end

@@ -2,7 +2,7 @@
 
 A simple client for [Gemini API](https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/inference).
 
-For an authentication, this gem uses a service account json file.
+For authentication, this gem uses a service account JSON file.
 
 ## Installation
 
@@ -28,6 +28,7 @@ $ gem install llmclt
 
 Use as follows:
 
+Using a Google Cloud service account
 ```ruby
 client = Llmclt::Client.new(
   project_id: project_id,
@@ -35,7 +36,17 @@ client = Llmclt::Client.new(
   model: model,
   service_account_json: service_account_json
 )
+```
 
+Using a Vertex AI Studio API key (supported for standard and streaming text generation only, not batch predictions):
+```ruby
+client = Llmclt::Client.new(
+  model: model,
+  api_key: api_key
+)
+```
+
+```ruby
 prompt = 'Hello. This is Tom!. How are you?'
 
 response = client.request(prompt)
@@ -86,13 +97,13 @@ response.text
 
 ```ruby
 client = Llmclt::Client.new()
-prompt = [
+prompts = [
   'Hello. This is Tom!. How are you?',
   'Do you know my name?'
 ]
 client.chat_jsonl(prompts)
 ```
-then, it outputs JSON Lines like as follows:
+This outputs JSON Lines formatted as follows:
 ```json
 {"request":{"contents": [{"role": "user", "parts": [{"text": "Hello. This is Tom!. How are you?"}]}]}}
 {"request":{"contents": [{"role": "user", "parts": [{"text": "Do you know my name?"}]}]}}
@@ -116,7 +127,7 @@ response.state
 response.batch_job_id
 => 'BATCH_JOB_ID'
 ```
-then, you can poll for the status of the batch job using the `BATCH_JOB_ID` like as follows:
+Then, you can poll for the status of the batch job using the `BATCH_JOB_ID` as follows:
 ```ruby
 response = client.batch_state_request('BATCH_JOB_ID')
 response.state

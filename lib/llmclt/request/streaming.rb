@@ -6,9 +6,15 @@ module Llmclt
       include Llmclt::Request::Chat
 
       def endpoint_uri
-        URI.parse(
-          "https://#{endpoint_host}/v1/projects/#{@config.project_id}/locations/#{@config.location_id}/publishers/google/models/#{@config.model}:streamGenerateContent"
-        )
+        if @config.api_key.blank?
+          URI.parse(
+            "https://#{endpoint_host}/v1/projects/#{@config.project_id}/locations/#{@config.location_id}/publishers/google/models/#{@config.model}:streamGenerateContent"
+          )
+        else
+          URI.parse(
+            "https://#{endpoint_host}/v1/publishers/google/models/#{@config.model}:streamGenerateContent?key=#{@config.api_key}"
+          )
+        end
       end
 
       def build_response(response)

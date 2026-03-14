@@ -7,6 +7,7 @@ module Llmclt
       location_id: 'asia-northeast1',
       model: 'gemini-1.5-pro-001',
       service_account_json: nil,
+      api_key: nil,
       system_instruction_prompt: nil,
       open_timeout: 60,
       read_timeout: 60,
