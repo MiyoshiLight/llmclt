@@ -5,7 +5,7 @@ module Llmclt
     DEFAULT_CONFIGS = {
       project_id: nil,
       location_id: 'asia-northeast1',
-      model: 'gemini-1.5-pro-001',
+      model: 'gemini-2.5-flash-lite',
       service_account_json: nil,
       api_key: nil,
       system_instruction_prompt: nil,

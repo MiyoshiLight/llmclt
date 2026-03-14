@@ -3,7 +3,7 @@
 RSpec.describe Llmclt::Client do
   let!(:project_id) { 'aaa-bbb-123456' }
   let!(:location_id) { 'us-central1' }
-  let!(:model) { 'gemini-2.0-flash-lite-001' }
+  let!(:model) { 'gemini-2.5-flash-lite' }
   let!(:service_account_json) { File.read('spec/fixtures/service_account.json') }
   let!(:api_key) { 'AIzaSyB-vX9qR7zW3kP2mL1nJ0h5Y8t4G6f2E0c' }
   let!(:client) do
