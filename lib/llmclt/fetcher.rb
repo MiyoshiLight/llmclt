@@ -59,7 +59,7 @@ module Llmclt
     end
 
     def request_headers
-      if @config.api_key.blank?
+      if @config.api_key_blank?
         authorizer.apply(default_request_headers)
       else
         default_request_headers

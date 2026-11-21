@@ -6,7 +6,7 @@ module Llmclt
       include Llmclt::Request::Chat
 
       def endpoint_uri
-        if @config.api_key.blank?
+        if @config.api_key_blank?
           URI.parse(
             "https://#{endpoint_host}/v1/projects/#{@config.project_id}/locations/#{@config.location_id}/publishers/google/models/#{@config.model}:streamGenerateContent"
           )

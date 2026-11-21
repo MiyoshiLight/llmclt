@@ -45,12 +45,7 @@ module Llmclt
       def build_request_content
         return {} if @setting.nil? || @setting.empty?
 
-        config = PARAMETERS.each_with_object({}) do |param, cfg|
-          p = param.to_s.camelize(:lower).to_sym
-          cfg[p] = @setting[param] unless @setting[param].nil?
-        end
-
-        { generationConfig: config }
+        { generationConfig: Llmclt::Helper.camelize_keys(PARAMETERS, @setting) }
       end
     end
   end

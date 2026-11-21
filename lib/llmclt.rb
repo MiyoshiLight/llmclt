@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'active_support/core_ext/string/inflections'
-require 'active_support/core_ext/object/blank'
 require 'googleauth'
 
 require_relative 'llmclt/config'
@@ -22,6 +20,7 @@ require_relative 'llmclt/response/chat'
 require_relative 'llmclt/response/non_streaming'
 require_relative 'llmclt/response/streaming'
 require_relative 'llmclt/response/batch'
+require_relative 'llmclt/helper'
 require_relative 'llmclt/version'
 
 module Llmclt

@@ -18,6 +18,14 @@ module Llmclt
     attr_accessor :safety_config
     attr_accessor :generation_config
 
+    def api_key?
+      !api_key.nil? && !api_key.to_s.strip.empty?
+    end
+
+    def api_key_blank?
+      !api_key?
+    end
+
     def initialize(**kwargs)
       DEFAULT_CONFIGS.each do |key, value|
         send(:"#{key}=", kwargs[key] || value)
